@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="EN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="scripts/theme1b4a.js"></script>
+	<title></title>
+<style>
+@media (min-width: 576px) {
+	form label {text-align: right;}
+}
+#title,.btn-group-vertical,.form-horizontal {display: none;}
+</style>
+</head>
+<body id="demo" onload="setHeight();" onresize="setHeight();">
+<div class="d-block d-md-none">
+<nav class="navbar bg-dark navbar-dark fixed-top">
+  <a class="navbar-brand" href="http://www.gem-editor.com/gwc/theme1b4a.php"></a>
+  <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#myNavbar">
+	<span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="myNavbar">
+    <ul class="navbar-nav">
+	</ul>
+  </div>
+</nav>
+</div>
+   <div class="container-fluid">
+      <div class="d-block d-md-none" style="padding-top: 50px;"></div>
+      <div class="row">
+         <div class="col-md-3 d-none d-md-block bg-warning">
+		    <div class="container">
+		          <div style="padding: 20px" id="title">
+				     <b><h2><center></center></h2></b>
+				  </div>
+                  <br>
+                  <div class="btn-group-vertical btn-group-lg bg-light rounded">
+					 <ul class="dropdown-menu" role="menu">
+                     </ul>
+                     <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+                     GEM <span class="caret"></span></button>
+                  </div>
+                  <br>
+                  <br>
+			</div>
+         </div>
+         <div class="col-md-9" style="padding-top: 20px;padding-bottom: 20px;">
+           <div class="card bg-light">
+               <div class="card-body">
+				   <form class="form-horizontal" role="form" method="post">
+					  <div class="form-group row">
+						 <label class="col-form-label col-sm-4" for="name">Name:</label>
+						 <div class="col-sm-6">
+							<input type="text" class="form-control" name="name">
+						 </div>
+					  </div>
+					  <div class="form-group row">
+						 <label class="col-form-label col-sm-4" for="phone">Contact&nbsp;Phone&nbsp;#:</label>
+						 <div class="col-sm-6">
+							<input type="text" class="form-control" name="phone">
+						 </div>
+					  </div>
+					  <div class="form-group row">
+						 <label class="col-form-label col-sm-4" for="email">Email Address:</label>
+						 <div class="col-sm-6">
+							<input type="email" class="form-control" name="email">
+						 </div>
+					  </div>
+					  <div class="form-group row">
+						 <label class="col-form-label col-sm-4" for="message">Message:</label>
+						 <div class="col-sm-6">
+							<textarea class="form-control" rows="5" name="message"></textarea>
+							<br>
+							<button class="btn btn-outline-primary" type="submit" disabled>
+								<i class="fa fa-paper-plane"></i> SEND MESSAGE
+							</button>
+						 </div>
+					  </div>
+				   </form>
+               </div>
+				<div class="card-footer">
+					<center>This website was created using <a href="https://www.gem-editor.com">GEM</a>.</center>
+				</div>			   
+           </div>
+         </div>
+      </div>
+   </div>
+</body>
+<script>
+
+function setHeight() {
+$(".container").css("height","initial");
+if ($(".container").height() < window.innerHeight)
+   $(".container").height(window.innerHeight);
+}
+
+</script>
+</html>
