@@ -4,23 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="scripts/theme1b4a.js"></script>
 	<title></title>
 <style>
 @media (min-width: 576px) {
 	form label {text-align: right;}
 }
-.form-horizontal {display: none;}
+
+#ctform, #pcmts {display: none;}
+
 </style>
 </head>
 <body id="demo" onload="setHeight();" onresize="setHeight();">
 <div class="d-block d-md-none">
 <nav class="navbar bg-dark navbar-dark fixed-top">
-  <a class="navbar-brand" href="http://www.gem-editor.com/gwc/theme1b4a.php"></a>
+  <a class="navbar-brand" href="http://www.gem-editor.com/gwc/theme1b4a.php" id="nbtitle"></a>
   <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#myNavbar">
 	<span class="navbar-toggler-icon"></span>
   </button>
@@ -39,8 +37,8 @@
 				     <b><h2><center></center></h2></b>
 				  </div>
                   <br>
-                  <div class="btn-group-vertical btn-group-lg bg-light rounded">
-					 <ul class="dropdown-menu" role="menu">
+                  <div class="btn-group-vertical btn-group-lg bg-light rounded" id="btngrp">
+					 <ul class="dropdown-menu" role="menu" id="ddmenu">
                      </ul>
                      <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
                      <span class="caret"></span></button>
@@ -51,9 +49,11 @@
          </div>
          <div class="col-md-9" style="padding-top: 20px;padding-bottom: 20px;">
            <div class="card bg-light">
-			   <img class="card-img-top" src="">
+			   <img class="card-img-top" src="" id="pimage">
                <div class="card-body">
-				   <form class="form-horizontal" role="form" method="post">
+			       <div id="pbody">
+				   </div>
+				   <form class="form-horizontal" role="form" method="post" id="ctform">
 					  <div class="form-group row">
 						 <label class="col-form-label col-sm-4" for="name">Name:</label>
 						 <div class="col-sm-6">
@@ -83,6 +83,13 @@
 						 </div>
 					  </div>
 				   </form>
+				   <div id="pcmts">
+					   <!-- begin htmlcommentbox.com -->
+					   <div id="HCB_comment_box" style="background-color: transparent;"><a href="https://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...</div>
+					   <link rel="stylesheet" type="text/css" href="https://www.htmlcommentbox.com/static/skins/default/skin.css" />
+					   <script type="text/javascript" language="javascript" id="hcb"> /*<!--*/ if(!window.hcb_user){hcb_user={  };} (function(){s=document.createElement("script");s.setAttribute("type","text/javascript");s.setAttribute("src", "https://www.htmlcommentbox.com/jread?page="+escape((window.hcb_user && hcb_user.PAGE)||(""+window.location)).replace("+","%2B")+"&opts=470&num=10");if (typeof s!="undefined") document.getElementsByTagName("head")[0].appendChild(s);})(); /*-->*/ </script>
+					   <!-- end htmlcommentbox.com -->
+				   </div>
                </div>
 				<div class="card-footer">
 					<center>This website was created using <a href="https://www.gem-editor.com">GEM</a>.</center>
@@ -91,6 +98,10 @@
          </div>
       </div>
    </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="scripts/theme1b4a.js"></script>
 </body>
 <script>
 
