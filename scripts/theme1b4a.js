@@ -5,62 +5,59 @@ if (pos != -1) p = url.charAt(pos+2); else p = "1";
 pos = url.search("w=[1-9]");
 if (pos != -1) w = url.charAt(pos+2); else w = "1";
 
-var xhttp = new XMLHttpRequest();
-xhttp.onreadystatechange = function() {
-	if (this.readyState == 4 && this.status == 200) {
-		xml = this.responseXML;
-		var x = xml.getElementsByTagName("title")[0].childNodes[0];
-		if (x) var title = x.nodeValue; else title = "";
-		pos=title.lastIndexOf("> ");
-		if (pos != -1) title=title.substring(pos+2);
-		pos=title.lastIndexOf(" <");
-		if (pos != -1) title=title.substring(0,pos);
-		document.getElementsByTagName("title")[0].innerText=title;
-		if (x) title = x.nodeValue; else title = "";
-		document.getElementById("nbtitle").innerHTML=title;
-		document.getElementById("title").innerHTML = "<b><h2><center>" + title + "</center></h2></b>";
-		var x = xml.getElementsByTagName("style")[0].childNodes[0];
-		if (x) var stl = x.nodeValue; else stl = "";
-		var ist = document.getElementsByTagName("style")[0].innerText;
-		document.getElementsByTagName("style")[0].innerText = ist + stl;
-		var pn = "", pn2 = "";
-		var pnames = xml.evaluate("/website/page/name[.!='']", xml, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
-		for ( var i=0 ; i < pnames.snapshotLength; i++ ) {
-		   pn += "<li class='nav-item'><a class='nav-link' href='javascript:render(" + (i+1) + ",1);'>"
-		   + pnames.snapshotItem(i).textContent + "</a></li>";
-		   pn2 += "<a href='javascript:render(" + (i+1) + ",1);' class='btn btn-outline-primary'>"
-		   + pnames.snapshotItem(i).textContent + "</a>";
-		}
-		document.getElementById("myNavbar").firstElementChild.innerHTML = pn;
-		document.getElementById("btngrp").insertAdjacentHTML("afterbegin",pn2);
-		loadAnotherFile();
-	}
-};
-xhttp.open("GET", "data/website.xml", true);
-xhttp.send();
-  
-function loadAnotherFile() {
+function loadFile(url,cFunction) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			xml2 = this.responseXML;
-			var x = xml2.getElementsByTagName("title")[0].childNodes[0];
-			var title = x.nodeValue;
-			document.getElementById("btngrp").lastElementChild.insertAdjacentHTML("afterbegin",title);
-			var pn = "";
-			var pnames = xml2.evaluate("/website/page/name[.!='']", xml2, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
-			for ( var i=0 ; i < pnames.snapshotLength; i++ ) {
-			   pn += "<li><a class='dropdown-item' href='javascript:render(" + (i+1) + ",2);'>" 
-			   + pnames.snapshotItem(i).textContent + "</a></li>";
-			}
-			document.getElementById("ddmenu").innerHTML = pn;
-			btn = document.getElementById("myNavbar").firstElementChild.innerHTML;
-			btn2 = document.getElementById("btngrp").innerHTML;
-			render(p,w);
-		}
+		if (this.readyState == 4 && this.status == 200) cFunction(this);
 	};
-	xhttp.open("GET", "data/website2.xml", true);
+	xhttp.open("GET", url, true);
 	xhttp.send();
+}
+
+function ml_display(xhttp) {
+	xml = xhttp.responseXML;
+	var x = xml.getElementsByTagName("title")[0].childNodes[0];
+	if (x) var title = x.nodeValue; else title = "";
+	pos=title.lastIndexOf("> ");
+	if (pos != -1) title=title.substring(pos+2);
+	pos=title.lastIndexOf(" <");
+	if (pos != -1) title=title.substring(0,pos);
+	document.getElementsByTagName("title")[0].innerText=title;
+	if (x) title = x.nodeValue; else title = "";
+	document.getElementById("nbtitle").innerHTML=title;
+	document.getElementById("title").innerHTML = "<b><h2><center>" + title + "</center></h2></b>";
+	var x = xml.getElementsByTagName("style")[0].childNodes[0];
+	if (x) var stl = x.nodeValue; else stl = "";
+	var ist = document.getElementsByTagName("style")[0].innerText;
+	document.getElementsByTagName("style")[0].innerText = ist + stl;
+	var pn = "", pn2 = "";
+	var pnames = xml.evaluate("/website/page/name[.!='']", xml, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+	for ( var i=0 ; i < pnames.snapshotLength; i++ ) {
+	   pn += "<li class='nav-item'><a class='nav-link' href='javascript:render(" + (i+1) + ",1);'>"
+	   + pnames.snapshotItem(i).textContent + "</a></li>";
+	   pn2 += "<a href='javascript:render(" + (i+1) + ",1);' class='btn btn-outline-primary'>"
+	   + pnames.snapshotItem(i).textContent + "</a>";
+	}
+	document.getElementById("myNavbar").firstElementChild.innerHTML = pn;
+	document.getElementById("btngrp").insertAdjacentHTML("afterbegin",pn2);
+	loadFile("data/website2.xml",dd_display);
+}
+
+function dd_display(xhttp) {
+	xml2 = xhttp.responseXML;
+	var x = xml2.getElementsByTagName("title")[0].childNodes[0];
+	var title = x.nodeValue;
+	document.getElementById("btngrp").lastElementChild.insertAdjacentHTML("afterbegin",title);
+	var pn = "";
+	var pnames = xml2.evaluate("/website/page/name[.!='']", xml2, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+	for ( var i=0 ; i < pnames.snapshotLength; i++ ) {
+	   pn += "<li><a class='dropdown-item' href='javascript:render(" + (i+1) + ",2);'>" 
+	   + pnames.snapshotItem(i).textContent + "</a></li>";
+	}
+	document.getElementById("ddmenu").innerHTML = pn;
+	btn = document.getElementById("myNavbar").firstElementChild.innerHTML;
+	btn2 = document.getElementById("btngrp").innerHTML;
+	render(p,w);
 }
 
 function render(pn, ws) {
