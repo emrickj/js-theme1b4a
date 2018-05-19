@@ -1,9 +1,10 @@
 var url = window.location.href;
 var pos = url.search("p=[1-6]");
-var xml, xml2, sf, oc, btn, btn2;
+var dom = [], oc, btn, btn2;
 if (pos != -1) p = url.charAt(pos+2); else p = "1";
 pos = url.search("w=[1-9]");
 if (pos != -1) w = url.charAt(pos+2); else w = "1";
+loadFile("data/website.xml",ml_display);
 
 function loadFile(url,cFunction) {
 	var xhttp = new XMLHttpRequest();
@@ -15,8 +16,8 @@ function loadFile(url,cFunction) {
 }
 
 function ml_display(xhttp) {
-	xml = xhttp.responseXML;
-	var x = xml.getElementsByTagName("title")[0].childNodes[0];
+	dom.push(xhttp.responseXML);
+	var x = dom[0].getElementsByTagName("title")[0].childNodes[0];
 	if (x) var title = x.nodeValue; else title = "";
 	pos=title.lastIndexOf("> ");
 	if (pos != -1) title=title.substring(pos+2);
@@ -26,12 +27,12 @@ function ml_display(xhttp) {
 	if (x) title = x.nodeValue; else title = "";
 	document.getElementById("nbtitle").innerHTML=title;
 	document.getElementById("title").innerHTML = "<b><h2><center>" + title + "</center></h2></b>";
-	var x = xml.getElementsByTagName("style")[0].childNodes[0];
+	var x = dom[0].getElementsByTagName("style")[0].childNodes[0];
 	if (x) var stl = x.nodeValue; else stl = "";
 	var ist = document.getElementsByTagName("style")[0].innerText;
 	document.getElementsByTagName("style")[0].innerText = ist + stl;
 	var pn = "", pn2 = "";
-	var pnames = xml.evaluate("/website/page/name[.!='']", xml, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+	var pnames = dom[0].evaluate("/website/page/name[.!='']", dom[0], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 	for ( var i=0 ; i < pnames.snapshotLength; i++ ) {
 	   pn += "<li class='nav-item'><a class='nav-link' href='javascript:render(" + (i+1) + ",1);'>"
 	   + pnames.snapshotItem(i).textContent + "</a></li>";
@@ -44,12 +45,12 @@ function ml_display(xhttp) {
 }
 
 function dd_display(xhttp) {
-	xml2 = xhttp.responseXML;
-	var x = xml2.getElementsByTagName("title")[0].childNodes[0];
+	dom.push(xhttp.responseXML);
+	var x = dom[1].getElementsByTagName("title")[0].childNodes[0];
 	var title = x.nodeValue;
 	document.getElementById("btngrp").lastElementChild.insertAdjacentHTML("afterbegin",title);
 	var pn = "";
-	var pnames = xml2.evaluate("/website/page/name[.!='']", xml2, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+	var pnames = dom[1].evaluate("/website/page/name[.!='']", dom[1], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 	for ( var i=0 ; i < pnames.snapshotLength; i++ ) {
 	   pn += "<li><a class='dropdown-item' href='javascript:render(" + (i+1) + ",2);'>" 
 	   + pnames.snapshotItem(i).textContent + "</a></li>";
@@ -61,20 +62,19 @@ function dd_display(xhttp) {
 }
 
 function render(pn, ws) {
-    if (ws!=1) sf=xml2; else sf=xml;
-	var img = sf.evaluate('/website/page['+pn+']/image', sf, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null );
-	var contents = sf.evaluate('/website/page['+pn+']/contents', sf, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null );
+	var img = dom[ws-1].evaluate('/website/page['+pn+']/image', dom[ws-1], null, XPathResult.FIRST_ORDERED_NODE_TYPE, null );
+	var contents = dom[ws-1].evaluate('/website/page['+pn+']/contents', dom[ws-1], null, XPathResult.FIRST_ORDERED_NODE_TYPE, null );
 	var cnt = contents.singleNodeValue.textContent;
-    while (cnt.includes('"?p=')) {
+    	while (cnt.includes('"?p=')) {
 	   cnt=cnt.replace('"?p=1','"javascript:render(1,'+ws+');');
 	   cnt=cnt.replace('"?p=2','"javascript:render(2,'+ws+');');
 	   cnt=cnt.replace('"?p=3','"javascript:render(3,'+ws+');');
 	   cnt=cnt.replace('"?p=4','"javascript:render(4,'+ws+');');
 	   cnt=cnt.replace('"?p=5','"javascript:render(5,'+ws+');');
 	   cnt=cnt.replace('"?p=6','"javascript:render(6,'+ws+');');
-    }
+    	}
 	document.getElementById("pimage").setAttribute("src", img.singleNodeValue.textContent);
-	var attr = sf.evaluate('/website/page['+pn+']/@type', sf, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null );
+	var attr = dom[ws-1].evaluate('/website/page['+pn+']/@type', dom[ws-1], null, XPathResult.FIRST_ORDERED_NODE_TYPE, null );
 	document.getElementById("pbody").innerHTML = cnt;
 	if (attr.singleNodeValue.textContent=="form")
 		document.getElementById("ctform").style.display = "block";
