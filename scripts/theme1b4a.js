@@ -32,8 +32,7 @@ function ml_display(xhttp) {
 	var ist = document.getElementsByTagName("style")[0].innerText;
 	document.getElementsByTagName("style")[0].innerText = ist + stl;
 	var pn = "", pn2 = "";
-	//var pnames = dom[0].evaluate("/website/page/name[.!='']", dom[0], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
-  var pnames = dom[0].querySelectorAll("name:not(:empty)");
+	var pnames = dom[0].querySelectorAll("name:not(:empty)");
 	for ( var i=0 ; i < pnames.length; i++ ) {
 	   pn += "<li class='nav-item'><a class='nav-link' href='javascript:render(" + (i+1) + ",1);'>"
 	   + pnames[i].textContent + "</a></li>";
@@ -51,7 +50,6 @@ function dd_display(xhttp) {
 	var title = x.nodeValue;
 	document.getElementById("btngrp").lastElementChild.insertAdjacentHTML("afterbegin",title);
 	var pn = "";
-	//var pnames = dom[1].evaluate("/website/page/name[.!='']", dom[1], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
 	var pnames = dom[1].querySelectorAll("name:not(:empty)");
 	for ( var i=0 ; i < pnames.length; i++ ) {
 	   pn += "<li><a class='dropdown-item' href='javascript:render(" + (i+1) + ",2);'>" 
@@ -64,11 +62,10 @@ function dd_display(xhttp) {
 }
 
 function render(pn, ws) {
-  //var cp = dom[ws-1].querySelector("page:nth-of-type("+pn+")");
-  var cp = dom[ws-1].getElementsByTagName("page")[pn-1];
+	var cp = dom[ws-1].getElementsByTagName("page")[pn-1];
 	var img = cp.querySelector("image").textContent;
 	var cnt = cp.querySelector("contents").textContent;
-  while (cnt.indexOf('"?p=')!=-1) {
+	while (cnt.indexOf('"?p=')!=-1) {
 	   cnt=cnt.replace('"?p=1','"javascript:render(1,'+ws+');');
 	   cnt=cnt.replace('"?p=2','"javascript:render(2,'+ws+');');
 	   cnt=cnt.replace('"?p=3','"javascript:render(3,'+ws+');');
@@ -81,7 +78,7 @@ function render(pn, ws) {
 	  document.getElementById("pimage").style.display = "block";
 	else document.getElementById("pimage").style.display = "none";
 	document.getElementById("pbody").innerHTML = cnt;
-  var attr = cp.attributes.getNamedItem("type").textContent;
+	var attr = cp.attributes.getNamedItem("type").textContent;
 	if (attr=="form")
 		document.getElementById("ctform").style.display = "block";
 	else document.getElementById("ctform").style.display = "none";
