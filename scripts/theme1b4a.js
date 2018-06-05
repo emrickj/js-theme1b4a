@@ -32,12 +32,13 @@ function ml_display(xhttp) {
 	var ist = document.getElementsByTagName("style")[0].innerText;
 	document.getElementsByTagName("style")[0].innerText = ist + stl;
 	var pn = "", pn2 = "";
-	var pnames = dom[0].evaluate("/website/page/name[.!='']", dom[0], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
-	for ( var i=0 ; i < pnames.snapshotLength; i++ ) {
+	//var pnames = dom[0].evaluate("/website/page/name[.!='']", dom[0], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+  var pnames = dom[0].querySelectorAll("name:not(:empty)");
+	for ( var i=0 ; i < pnames.length; i++ ) {
 	   pn += "<li class='nav-item'><a class='nav-link' href='javascript:render(" + (i+1) + ",1);'>"
-	   + pnames.snapshotItem(i).textContent + "</a></li>";
+	   + pnames[i].textContent + "</a></li>";
 	   pn2 += "<a href='javascript:render(" + (i+1) + ",1);' class='btn btn-outline-primary'>"
-	   + pnames.snapshotItem(i).textContent + "</a>";
+	   + pnames[i].textContent + "</a>";
 	}
 	document.getElementById("myNavbar").firstElementChild.innerHTML = pn;
 	document.getElementById("btngrp").insertAdjacentHTML("afterbegin",pn2);
@@ -50,10 +51,11 @@ function dd_display(xhttp) {
 	var title = x.nodeValue;
 	document.getElementById("btngrp").lastElementChild.insertAdjacentHTML("afterbegin",title);
 	var pn = "";
-	var pnames = dom[1].evaluate("/website/page/name[.!='']", dom[1], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
-	for ( var i=0 ; i < pnames.snapshotLength; i++ ) {
+	//var pnames = dom[1].evaluate("/website/page/name[.!='']", dom[1], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );
+	var pnames = dom[1].querySelectorAll("name:not(:empty)");
+	for ( var i=0 ; i < pnames.length; i++ ) {
 	   pn += "<li><a class='dropdown-item' href='javascript:render(" + (i+1) + ",2);'>" 
-	   + pnames.snapshotItem(i).textContent + "</a></li>";
+	   + pnames[i].textContent + "</a></li>";
 	}
 	document.getElementById("ddmenu").innerHTML = pn;
 	btn = document.getElementById("myNavbar").firstElementChild.innerHTML;
@@ -62,24 +64,28 @@ function dd_display(xhttp) {
 }
 
 function render(pn, ws) {
-	var img = dom[ws-1].evaluate('/website/page['+pn+']/image', dom[ws-1], null, XPathResult.FIRST_ORDERED_NODE_TYPE, null );
-	var contents = dom[ws-1].evaluate('/website/page['+pn+']/contents', dom[ws-1], null, XPathResult.FIRST_ORDERED_NODE_TYPE, null );
-	var cnt = contents.singleNodeValue.textContent;
-    	while (cnt.includes('"?p=')) {
+  //var cp = dom[ws-1].querySelector("page:nth-of-type("+pn+")");
+  var cp = dom[ws-1].getElementsByTagName("page")[pn-1];
+	var img = cp.querySelector("image").textContent;
+	var cnt = cp.querySelector("contents").textContent;
+  while (cnt.indexOf('"?p=')!=-1) {
 	   cnt=cnt.replace('"?p=1','"javascript:render(1,'+ws+');');
 	   cnt=cnt.replace('"?p=2','"javascript:render(2,'+ws+');');
 	   cnt=cnt.replace('"?p=3','"javascript:render(3,'+ws+');');
 	   cnt=cnt.replace('"?p=4','"javascript:render(4,'+ws+');');
 	   cnt=cnt.replace('"?p=5','"javascript:render(5,'+ws+');');
 	   cnt=cnt.replace('"?p=6','"javascript:render(6,'+ws+');');
-    	}
-	document.getElementById("pimage").setAttribute("src", img.singleNodeValue.textContent);
-	var attr = dom[ws-1].evaluate('/website/page['+pn+']/@type', dom[ws-1], null, XPathResult.FIRST_ORDERED_NODE_TYPE, null );
+  }
+	document.getElementById("pimage").setAttribute("src", img);
+	if (img.length > 4)
+	  document.getElementById("pimage").style.display = "block";
+	else document.getElementById("pimage").style.display = "none";
 	document.getElementById("pbody").innerHTML = cnt;
-	if (attr.singleNodeValue.textContent=="form")
+  var attr = cp.attributes.getNamedItem("type").textContent;
+	if (attr=="form")
 		document.getElementById("ctform").style.display = "block";
 	else document.getElementById("ctform").style.display = "none";
-	if (attr.singleNodeValue.textContent=="comments") 
+	if (attr=="comments") 
 		document.getElementById("pcmts").style.display = "block";
 	else document.getElementById("pcmts").style.display = "none";
 	document.getElementById("myNavbar").firstElementChild.innerHTML = btn;
